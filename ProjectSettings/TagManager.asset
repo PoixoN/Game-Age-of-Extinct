@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Collectable
+  - Enemy
+  - Bullet
+  - Trap
+  - Trampline
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Ground
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 720358701
+    locked: 0
+  - name: Middleground
+    uniqueID: 2680086039
+    locked: 0
+  - name: Entity
+    uniqueID: 3572053055
+    locked: 0
+  - name: Ground
+    uniqueID: 1759513969
+    locked: 0
+  - name: Foreground
+    uniqueID: 1483598827
+    locked: 0
+  - name: Lost
+    uniqueID: 419216413
+    locked: 0
