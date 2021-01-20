@@ -4,32 +4,15 @@ using UnityEngine;
 
 public class Deathcoin : MonoBehaviour, ICollectable
 {
-    private AudioSource deathcoinSound;
-    private ParticleSystem particleSystem;
-    private SpriteRenderer spriteRenderer;
-
-    private void Awake()
+    public void Collect(Player player)
     {
-        deathcoinSound = GetComponent<AudioSource>();
-        particleSystem = GetComponent<ParticleSystem>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
-
-    public void Colect(Player player)
-    {
-        StartCoroutine(AnimParticle());
-        deathcoinSound.Play();
+        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<ParticleSystem>().Play();
+        GetComponent<AudioSource>().Play();
+        GetComponent<SpriteRenderer>().enabled = false;
         ++player.CollectedDeathcoins;
+        Destroy(gameObject, 0.80f);
     }
 
-    IEnumerator AnimParticle()
-    {
-        particleSystem.Play();
-        spriteRenderer.enabled = false; //hide deathcoin sprite
-        yield return new WaitForSeconds(0.2f);
-        particleSystem.Stop();
-        yield return new WaitForSeconds(0.27f);
-        Destroy(gameObject);
-    }
+    public void Artem() { }
 }

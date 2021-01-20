@@ -6,30 +6,25 @@ using System;
 using UnityEditor;
 
 /// <summary>
-/// Написати самари и зробити синглтоном
+/// Написати самари
 /// </summary>
 public class SaveSystem : MonoBehaviour
 {
-    [SerializeField] private const int numberOfWorlds = 10;
-    
-    private static SaveSystem _instance = null; // Экземпляр объекта
+    public static PlayerData PlayerSave { get; private set; } = new PlayerData();
+    public static Settings SettingsSave { get; private set; } = new Settings();
 
-    private static PlayerData playerSave = new PlayerData();
-    private static Settings settingsSave = new Settings();
+    public static SaveSystem Instance { get; private set; } = null;
 
     private void Awake()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
 
             if (PlayerPrefs.HasKey("PlayerData"))
             {
-                SubPlayerData subPlayerData;
-                subPlayerData = JsonUtility.FromJson<SubPlayerData>(PlayerPrefs.GetString("PlayerData"));
-                playerSave = ConverteToPlayerData(subPlayerData);
+                PlayerSave = JsonUtility.FromJson<PlayerData>(PlayerPrefs.GetString("PlayerData"));
             }
         }
         else
@@ -38,48 +33,38 @@ public class SaveSystem : MonoBehaviour
         }
     }
 
-    private PlayerData ConverteToPlayerData(SubPlayerData subPlayerData)
-    {
-        return new PlayerData((Hero)subPlayerData.hero, subPlayerData.deathcoins, subPlayerData.openedLevels);
-    }
-
-    #region Make Saves
-    /// <summary>
-    /// Add collected or earned(ads) deathcoins to common sum of player's deathcoins
-    /// </summary>
-    public static void AddDthcoinsToСommonSum(int deathcoins)
-    {
-        playerSave.deathcoins += deathcoins;
-        PlayerPrefs.Save();
-    }
+    ///// <summary>
+    ///// Add collected or earned(ads) deathcoins to common sum of player's deathcoins
+    ///// </summary>
+    //public static void AddDthcoinsToСommonSum(int deathcoins)
+    //{
+    //    PlayerSave.Deathcoins += deathcoins;
+    //}
 
     /// <summary>
     /// Set up new value for <c>player.hero</c> and <c>player.deathcoins</c>
     /// </summary>
-    public static void MakePlayerSave(PlayerData playerData) 
+    public void SavePlayerData(PlayerData data) 
     {
-        playerSave.hero = playerData.hero;
-        playerSave.deathcoins = playerData.deathcoins;
+        PlayerSave.Hero = data.Hero;
+        PlayerSave.MaxHealth = data.MaxHealth;
+        PlayerSave.Deathcoins = data.Deathcoins;
+        PlayerSave.LastCompletedLevelId = data.LastCompletedLevelId;
+
+        MakePlayerDataSave();
+    }
+
+    private void MakePlayerDataSave()
+    {
+        PlayerPrefs.SetString("PlayerData", JsonUtility.ToJson(PlayerSave));
         PlayerPrefs.Save();
     }
 
-    public static void MakeSettingsSave(Settings settingsData)
+    private void MakeSettingsSave()
     {
-
+        PlayerPrefs.SetString("Settings", JsonUtility.ToJson(SettingsSave));
+        PlayerPrefs.Save();
     }
-    #endregion
-
-    #region Get Saves
-    public static PlayerData GetPlayerSave()
-    {
-        return playerSave;
-    }
-
-    public static Settings GetSettingsSave()
-    {
-        return settingsSave;
-    }
-    #endregion
 
 #if UNITY_ANDROID && !UNITY_EDITOR
     private void OnApplicationPause(bool pause)
@@ -92,15 +77,7 @@ public class SaveSystem : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        PlayerPrefs.SetString("PlayerData", JsonUtility.ToJson(playerSave));
-        PlayerPrefs.SetString("Settings", JsonUtility.ToJson(settingsSave));
-        PlayerPrefs.Save();
-    }
-
-    private class SubPlayerData
-    {
-        public int hero;
-        public int deathcoins;
-        public int[] openedLevels;
+        MakePlayerDataSave();
+        MakeSettingsSave();
     }
 }

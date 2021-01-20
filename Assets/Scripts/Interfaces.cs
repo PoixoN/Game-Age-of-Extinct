@@ -7,7 +7,13 @@ public interface IPooledObject
     ObjectPooler.ObjectInfo.ObjectType Type { get; }
 }
 
-interface ICollectable
+public interface ICollectable
 {
-    void Colect(Player player);
+    void Collect(Player player);
+    void Artem();
+}
+
+public interface IDamageable
+{
+    void ApplyDamage(int damage = 1);
 }

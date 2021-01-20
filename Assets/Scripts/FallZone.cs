@@ -9,14 +9,11 @@ using UnityEngine.SceneManagement;
 
 public class FallZone : MonoBehaviour
 {
-    [SerializeField] private GameObject panelLost;
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
-            Time.timeScale = 0; //makes stop falling
-            panelLost.SetActive(true);
+            collision.GetComponent<Player>().Death();
         }
     }
 }

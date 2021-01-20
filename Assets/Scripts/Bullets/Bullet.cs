@@ -43,15 +43,15 @@ public class Bullet : MonoBehaviour, IPooledObject
     {
         if (collision.tag != shooterTag && (collision.tag == "Enemy" || collision.tag == "Player"))
         {
-            Entity entity = collision.GetComponent<Entity>();
-            MakeDamage(entity);
+            IDamageable damageable = collision.GetComponent<IDamageable>();
+            MakeDamage(damageable);
             ObjectPooler.Instance.DestroyObject(gameObject);
         }
     }
 
-    protected virtual void MakeDamage(Entity entity)
+    protected virtual void MakeDamage(IDamageable damageable)
     {
-        entity.ReceiveDamage();
+        damageable.ApplyDamage();
     }
 
     public void OnCreate(string _shooterTag, Vector3 position, Vector2 direction)

@@ -25,19 +25,19 @@ public class Frog : Enemy
     void Update()
     {
         //Transition from Jump to Fall 
-        if (anim.GetBool("Jumping"))
+        if (_anim.GetBool("Jumping"))
         {
-            if (rb.velocity.y < 0.1)
+            if (_rb.velocity.y < 0.1)
             {
-                anim.SetBool("Falling", true);
-                anim.SetBool("Jumping", false);
+                _anim.SetBool("Falling", true);
+                _anim.SetBool("Jumping", false);
             }
         }
 
         //Transition from Fall to Idle 
-        if (coll.IsTouchingLayers(ground) && anim.GetBool("Falling"))
+        if (coll.IsTouchingLayers(ground) && _anim.GetBool("Falling"))
         {
-            anim.SetBool("Falling", false);
+            _anim.SetBool("Falling", false);
         }
     }
 
@@ -58,8 +58,8 @@ public class Frog : Enemy
                 //Test to see if I am on the ground, if so jump 
                 if (coll.IsTouchingLayers(ground))
                 {
-                    rb.velocity = new Vector2(-jumpLength, jumpHeight);
-                    anim.SetBool("Jumping", true);
+                    _rb.velocity = new Vector2(-jumpLength, jumpHeight);
+                    _anim.SetBool("Jumping", true);
                 }
             }
             else
@@ -80,8 +80,8 @@ public class Frog : Enemy
                 //Test to see if I am on the ground, if so jump 
                 if (coll.IsTouchingLayers(ground))
                 {
-                    rb.velocity = new Vector2(jumpLength, jumpHeight);
-                    anim.SetBool("Jumping", true);
+                    _rb.velocity = new Vector2(jumpLength, jumpHeight);
+                    _anim.SetBool("Jumping", true);
                 }
             }
             else
